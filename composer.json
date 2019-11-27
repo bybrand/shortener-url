@@ -1,0 +1,32 @@
+{
+    "name": "bybrand/shortenerURL",
+    "description": "URL Shortener to many providers used internally in Bybrand.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bernardo Castro",
+            "email": "bs.castro@gmail.com"
+        }
+    ],
+    "config": {
+		"vendor-dir": "./vendor"
+	},
+    "require": {
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "^6.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4",
+        "mockery/mockery": "^1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bybrand\\ShortenerURL\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bybrand\\ShortenerURL\\Test\\": "./tests/"
+        }
+    }
+}
