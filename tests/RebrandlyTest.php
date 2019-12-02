@@ -64,8 +64,7 @@ class RebrandlyTest extends TestCase
             'shortUrl'    => $this->faker->domainName . '/' . $this->faker->userName,
             'id'          => $this->faker->md5,
             'destination' => $this->faker->url,
-            'title'       => '',
-            'slashtag'    => 'bybrand'
+            'title'       => ''
         ];
 
         $response = m::mock('Psr\Http\Message\ResponseInterface');
@@ -89,6 +88,44 @@ class RebrandlyTest extends TestCase
         $this->assertArrayHasKey('shortUrl', $result);
         $this->assertArrayHasKey('id', $result);
         $this->assertArrayHasKey('destination', $result);
+    }
+
+    /**
+     * @group Rebrandly
+     * @group Rebrandly.brandedLink
+     */
+    public function testBrandedLink()
+    {
+        $jsonResult = [
+            'shortUrl'    => $this->faker->domainName . '/bybrand',
+            'id'          => $this->faker->md5,
+            'destination' => $this->faker->url,
+            'slashtag'    => 'bybrand'
+        ];
+
+        $response = m::mock('Psr\Http\Message\ResponseInterface');
+        $response->shouldReceive('getBody')->andReturn(json_encode($jsonResult));
+        $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
+
+        $HTTPClientMock = m::mock('GuzzleHttp\ClientInterface');
+        $HTTPClientMock->shouldReceive('post')->times(1)->andReturn($response);
+
+        // Set custom HTTP client.
+        $this->provider->setHttpClient($HTTPClientMock);
+
+        $shorten = new Shorten($this->provider);
+        $shorten->destination($this->faker->url);
+        $shorten->withBranded('bybrand');
+        $shorten->create();
+
+        // Get all returnet params.
+        $result = $shorten->toArray();
+
+        $this->assertArrayHasKey('shortUrl', $result);
+        $this->assertArrayHasKey('id', $result);
+        $this->assertArrayHasKey('destination', $result);
+        $this->assertArrayHasKey('slashtag', $result);
     }
 
     /**

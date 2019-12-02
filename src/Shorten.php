@@ -19,13 +19,19 @@ class Shorten
         return $this;
     }
 
+    public function withBranded($string)
+    {
+        $this->provider->brandedLink($string);
+        return $this;
+    }
+
     /**
-     * @return array Data
+     * @return void
      * @return object Exception\ShortenFailed
      */
     public function create()
     {
-        return $this->provider->post();
+        $this->provider->post();
         return $this;
     }
 

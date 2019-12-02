@@ -13,6 +13,14 @@ interface ShortenInterface
     public function destination($string);
 
     /**
+     * Set a custom branded link.
+     *
+     * @param  string
+     * @return void
+     */
+    public function brandedLink($string);
+
+    /**
      * Send a link to shorten via the provider.
      *
      * @return array

@@ -23,6 +23,7 @@ class Rebrandly implements ShortenInterface
     private $httpClient;
 
     private $longUrl;
+    private $slashtag;
     private $response = [];
 
     /**
@@ -85,6 +86,11 @@ class Rebrandly implements ShortenInterface
         $this->longUrl = $url;
     }
 
+    public function brandedLink($name)
+    {
+        $this->slashtag = $name;
+    }
+
     public function post()
     {
         if (!$this->longUrl) {
@@ -96,7 +102,8 @@ class Rebrandly implements ShortenInterface
             $response = $this->httpClient->post($this->targetEndpoint, [
                 'json' => [
                     'domain'      => ['fullName' => $this->domain],
-                    'destination' => $this->longUrl
+                    'destination' => $this->longUrl,
+                    'slashtag'    => $this->slashtag
                 ],
                 'headers' => [
                     'apikey'       => $this->apikey,
@@ -106,6 +113,7 @@ class Rebrandly implements ShortenInterface
             ]);
             // Return success.
             $body = (string) $response->getBody();
+            
             // Save all params returned in array.
             $this->response = json_decode($body, true);
         } catch (RequestException $e) {

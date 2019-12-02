@@ -85,6 +85,11 @@ class Bitly implements ShortenInterface
         $this->longUrl = $url;
     }
 
+    public function brandedLink($name)
+    {
+        return null;
+    }
+
     public function post()
     {
         if (!$this->longUrl) {
@@ -107,6 +112,7 @@ class Bitly implements ShortenInterface
 
             // Return success.
             $body = (string) $response->getBody();
+            
             // Save all params returned in array.
             $this->response = json_decode($body, true);
         } catch (RequestException $e) {
