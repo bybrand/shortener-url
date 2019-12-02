@@ -4,16 +4,16 @@ namespace Bybrand\ShortenerURL\Test;
 
 use PHPUnit\Framework\TestCase;
 
-use Bybrand\ShortenerURL\Provider\Bitly;
+use Bybrand\ShortenerURL\Provider\Rebrandly;
 use Bybrand\ShortenerURL\Shorten;
 use Bybrand\ShortenerURL\Exception\ShortenFailed;
 
 use Mockery as m;
 
 /**
- * @group Bitly
+ * @group Rebrandly
  */
-class BitlyTest extends TestCase
+class RebrandlyTest extends TestCase
 {
     protected $provider;
 
@@ -25,10 +25,10 @@ class BitlyTest extends TestCase
         // Generator fake contents.
         $this->faker = \Faker\Factory::create();
 
-        $this->provider = new Bitly([
-            'group'  => $this->faker->domainWord,
-            'domain' => $this->faker->domainName,
-            'token'  => $this->faker->md5,
+        $this->provider = new Rebrandly([
+            'workspace' => $this->faker->domainWord,
+            'domain'    => $this->faker->domainName,
+            'apikey'    => $this->faker->md5,
         ]);
     }
 
@@ -41,8 +41,8 @@ class BitlyTest extends TestCase
     }
 
     /**
-     * @group Bitly
-     * @group Bitly.destinationNotEmply
+     * @group Rebrandly
+     * @group Rebrandly.destinationNotEmply
      */
     public function testDestinationNotEmplyException()
     {
@@ -55,16 +55,17 @@ class BitlyTest extends TestCase
     }
 
     /**
-     * @group Bitly
-     * @group Bitly.shorten
+     * @group Rebrandly
+     * @group Rebrandly.shorten
      */
     public function testShorten()
     {
         $jsonResult = [
-            'link'     => $this->faker->domainName . '/' . $this->faker->userName,
-            'id'       => $this->faker->md5,
-            'long_url' => $this->faker->url,
-            'title'    => ''
+            'shortUrl'    => $this->faker->domainName . '/' . $this->faker->userName,
+            'id'          => $this->faker->md5,
+            'destination' => $this->faker->url,
+            'title'       => '',
+            'slashtag'    => 'bybrand'
         ];
 
         $response = m::mock('Psr\Http\Message\ResponseInterface');
@@ -85,22 +86,23 @@ class BitlyTest extends TestCase
         // Get all returnet params.
         $result = $shorten->toArray();
 
-        $this->assertArrayHasKey('link', $result);
+        $this->assertArrayHasKey('shortUrl', $result);
         $this->assertArrayHasKey('id', $result);
-        $this->assertArrayHasKey('long_url', $result);
+        $this->assertArrayHasKey('destination', $result);
     }
 
     /**
-     * @group Bitly
-     * @group Bitly.methods
+     * @group Rebrandly
+     * @group Rebrandly.methods
      */
     public function testMethods()
     {
         $jsonResult = [
-            'link'     => $this->faker->domainName . '/' . $this->faker->userName,
-            'id'       => $this->faker->md5,
-            'long_url' => $this->faker->url,
-            'title'    => ''
+            'shortUrl'    => $this->faker->domainName . '/' . $this->faker->userName,
+            'id'          => $this->faker->md5,
+            'destination' => $this->faker->url,
+            'title'       => '',
+            'slashtag'    => 'bybrand'
         ];
 
         $response = m::mock('Psr\Http\Message\ResponseInterface');
@@ -118,8 +120,8 @@ class BitlyTest extends TestCase
         $shorten->destination($this->faker->url);
         $shorten->create();
 
-        $this->assertEquals($jsonResult['link'], $shorten->getLink());
+        $this->assertEquals($jsonResult['shortUrl'], $shorten->getLink());
         $this->assertEquals($jsonResult['id'], $shorten->getId());
-        $this->assertEquals($jsonResult['long_url'], $shorten->getDestination());
+        $this->assertEquals($jsonResult['destination'], $shorten->getDestination());
     }
 }

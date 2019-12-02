@@ -12,7 +12,7 @@ use GuzzleHttp\ClientInterface as HttpClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
 
-class Bitly implements ShortenInterface
+class Rebrandly implements ShortenInterface
 {
     use GuardedPropertyTrait;
     use ArrayAccessorTrait;
@@ -29,25 +29,25 @@ class Bitly implements ShortenInterface
      * The target URL endpoint to short link.
      * @var string
      */
-    protected $targetEndpoint = 'https://api-ssl.bitly.com/v4/shorten';
+    protected $targetEndpoint = 'https://api.rebrandly.com/v1/links';
 
     /**
      * The base domain to url shortned.
      * @var string
      */
-    protected $domain = 'bit.ly';
+    protected $domain = 'rebrand.ly';
 
     /**
-     * A GUID for a Bitly group, get in the OAuth2 request.
+     * A Rebrandly ID, get in Rebrandly dashboard.
      * @var string
      */
-    protected $group;
+    protected $workspace;
 
     /**
-     * The Bearer Token specification, get in the OAuth2 request.
+     * The API key specification, get in Rebrandly dashboard.
      * @var string
      */
-    protected $token;
+    protected $apikey;
 
     public function __construct(array $options = [])
     {
@@ -95,16 +95,15 @@ class Bitly implements ShortenInterface
             // The Guzzle Client.
             $response = $this->httpClient->post($this->targetEndpoint, [
                 'json' => [
-                    'group_guid' => $this->group,
-                    'domain'     => $this->domain,
-                    'long_url'   => $this->longUrl
+                    'domain'      => ['fullName' => $this->domain],
+                    'destination' => $this->longUrl
                 ],
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $this->token,
-                    'Accept'        => 'application/json',
+                    'apikey'       => $this->apikey,
+                    'workspace'    => $this->workspace,
+                    'Content-Type' => 'application/json',
                 ]
             ]);
-
             // Return success.
             $body = (string) $response->getBody();
             // Save all params returned in array.
@@ -119,7 +118,7 @@ class Bitly implements ShortenInterface
 
     public function getLink()
     {
-        return $this->getValueByKey($this->response, 'link');
+        return $this->getValueByKey($this->response, 'shortUrl');
     }
 
     public function getId()
@@ -129,7 +128,7 @@ class Bitly implements ShortenInterface
 
     public function getDestination()
     {
-        return $this->getValueByKey($this->response, 'long_url');
+        return $this->getValueByKey($this->response, 'destination');
     }
 
     /**
