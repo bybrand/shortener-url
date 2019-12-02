@@ -1,6 +1,8 @@
 # Shortener URL
 A dominant URL shortener enabled to many providers. The idea with this extension is your changing between providers without changing lines of the code in the application.
 
+This code is used in production to make short links on [email signatures](https://www.bybrand.io) from the Bybrand.
+
 * Providers supported:: Bitly, and Rebrandly.
 
 

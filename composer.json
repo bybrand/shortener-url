@@ -1,5 +1,5 @@
 {
-    "name": "bybrand/shortenerURL",
+    "name": "bybrand/shortener-url",
     "description": "URL Shortener to many providers used internally in Bybrand.",
     "license": "MIT",
     "authors": [
