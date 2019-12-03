@@ -19,12 +19,6 @@ class Shorten
         return $this;
     }
 
-    public function withBranded($string)
-    {
-        $this->provider->brandedLink($string);
-        return $this;
-    }
-
     /**
      * @return void
      * @return object Exception\ShortenFailed
