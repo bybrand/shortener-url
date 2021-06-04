@@ -26,9 +26,9 @@ class BitlyTest extends TestCase
         $this->faker = \Faker\Factory::create();
 
         $this->provider = new Bitly([
-            'group'  => $this->faker->domainWord,
-            'domain' => $this->faker->domainName,
-            'token'  => $this->faker->md5,
+            'group'  => $this->faker->domainWord(),
+            'domain' => $this->faker->domainName(),
+            'token'  => $this->faker->md5()
         ]);
     }
 
@@ -61,9 +61,9 @@ class BitlyTest extends TestCase
     public function testShorten()
     {
         $jsonResult = [
-            'link'     => $this->faker->domainName . '/' . $this->faker->userName,
-            'id'       => $this->faker->md5,
-            'long_url' => $this->faker->url,
+            'link'     => $this->faker->domainName() . '/' . $this->faker->userName(),
+            'id'       => $this->faker->md5(),
+            'long_url' => $this->faker->url(),
             'title'    => ''
         ];
 
@@ -79,7 +79,7 @@ class BitlyTest extends TestCase
         $this->provider->setHttpClient($HTTPClientMock);
 
         $shorten = new Shorten($this->provider);
-        $shorten->destination($this->faker->url);
+        $shorten->destination($this->faker->url());
         $shorten->create();
 
         // Get all returnet params.
@@ -97,9 +97,9 @@ class BitlyTest extends TestCase
     public function testMethods()
     {
         $jsonResult = [
-            'link'     => $this->faker->domainName . '/' . $this->faker->userName,
-            'id'       => $this->faker->md5,
-            'long_url' => $this->faker->url,
+            'link'     => $this->faker->domainName() . '/' . $this->faker->userName(),
+            'id'       => $this->faker->md5(),
+            'long_url' => $this->faker->url(),
             'title'    => ''
         ];
 
@@ -115,7 +115,7 @@ class BitlyTest extends TestCase
         $this->provider->setHttpClient($HTTPClientMock);
 
         $shorten = new Shorten($this->provider);
-        $shorten->destination($this->faker->url);
+        $shorten->destination($this->faker->url());
         $shorten->create();
 
         $this->assertEquals($jsonResult['link'], $shorten->getLink());
