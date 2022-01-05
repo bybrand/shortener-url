@@ -41,7 +41,6 @@ class RebrandlyTest extends TestCase
     }
 
     /**
-     * @group Rebrandly
      * @group Rebrandly.destinationNotEmply
      */
     public function testDestinationNotEmplyException()
@@ -55,7 +54,6 @@ class RebrandlyTest extends TestCase
     }
 
     /**
-     * @group Rebrandly
      * @group Rebrandly.shorten
      */
     public function testShorten()
@@ -91,7 +89,6 @@ class RebrandlyTest extends TestCase
     }
 
     /**
-     * @group Rebrandly
      * @group Rebrandly.methods
      */
     public function testMethods()

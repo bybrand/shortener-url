@@ -111,7 +111,9 @@ class Rebrandly implements ShortenInterface
             $this->response = json_decode($body, true);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                throw new Exception\ShortenFailed(Psr7\str($e->getResponse()));
+                throw new Exception\ShortenFailed(
+                    Psr7\Message::toString($e->getResponse())
+                );
             }
             throw new Exception\ShortenFailed('The URL destination does not shortened.');
         }

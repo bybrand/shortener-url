@@ -41,7 +41,6 @@ class BitlyTest extends TestCase
     }
 
     /**
-     * @group Bitly
      * @group Bitly.destinationNotEmply
      */
     public function testDestinationNotEmplyException()
@@ -55,7 +54,6 @@ class BitlyTest extends TestCase
     }
 
     /**
-     * @group Bitly
      * @group Bitly.shorten
      */
     public function testShorten()
@@ -91,7 +89,6 @@ class BitlyTest extends TestCase
     }
 
     /**
-     * @group Bitly
      * @group Bitly.methods
      */
     public function testMethods()
